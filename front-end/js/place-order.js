@@ -137,7 +137,7 @@ function placeOrder(){
 }
 
 function printBill(orderId) {
-    const billWindow = open("", `Order ${orderId}`);
+    const billWindow = open("", `_blank`, "popup=true,width=200");
     billWindow.document.write(getBillDesignHTML(cart, orderId));
 }
 
