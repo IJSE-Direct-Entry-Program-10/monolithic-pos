@@ -84,13 +84,20 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<?> getOrders(@RequestParam(value = "q", required = false) String query){
         try (Connection connection = pool.getConnection()) {
-            String sql = "SELECT o.id, o.datetime, oc.customer_id, c.name, " +
-                    "       SUM(od.qty * od.unit_price) as total FROM `order` o " +
-                    "LEFT OUTER JOIN order_customer oc ON o.id = oc.order_id " +
-                    "LEFT OUTER JOIN customer c ON oc.customer_id = c.id " +
-                    "INNER JOIN order_detail od ON o.id = od.order_id " +
-                    "WHERE o.id LIKE ? OR o.datetime LIKE ? OR oc.customer_id LIKE ? OR c.name LIKE ?" +
-                    "GROUP BY o.id";
+            String sql = "SELECT CONCAT('OD', LPAD(o.id, 3, 0))          as id, " +
+                    "       o.datetime, " +
+                    "       CONCAT('C', LPAD(oc.customer_id, 3, 0)) as customer_id, " +
+                    "       c.name, " +
+                    "       SUM(od.qty * od.unit_price)             as total " +
+                    "FROM `order` o " +
+                    "         LEFT OUTER JOIN order_customer oc ON o.id = oc.order_id " +
+                    "         LEFT OUTER JOIN customer c ON oc.customer_id = c.id " +
+                    "         INNER JOIN order_detail od ON o.id = od.order_id " +
+                    "WHERE CONCAT('OD', LPAD(o.id, 3, 0)) LIKE ? " +
+                    "   OR o.datetime LIKE ? " +
+                    "   OR CONCAT('C', LPAD(oc.customer_id, 3, 0)) LIKE ? " +
+                    "   OR c.name LIKE ? " +
+                    "GROUP BY o.id;";
             PreparedStatement stm = connection.prepareStatement(sql);
             if (query == null) query = "";
             query = "%" + query + "%";
@@ -101,9 +108,9 @@ public class OrderController {
             List<OrderDTO2> orderList = new ArrayList<>();
 
             while (rst.next()){
-                int orderId = rst.getInt("id");
+                String orderId = rst.getString("id");
                 LocalDateTime orderDateTime = rst.getTimestamp("datetime").toLocalDateTime();
-                int customerId = rst.getInt("customer_id");
+                String customerId = rst.getString("customer_id");
                 String customerName = rst.getString("name");
                 BigDecimal orderTotal = rst.getBigDecimal("total");
                 orderList.add(new OrderDTO2(orderId, orderDateTime, customerId, customerName, orderTotal));
