@@ -1,6 +1,6 @@
-package lk.ijse.dep10.pos.dao.impl;
+package lk.ijse.dep10.pos.dao.custom.impl;
 
-import lk.ijse.dep10.pos.dao.CustomerDAO;
+import lk.ijse.dep10.pos.dao.custom.CustomerDAO;
 import lk.ijse.dep10.pos.entity.Customer;
 
 import java.sql.Connection;

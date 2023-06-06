@@ -1,6 +1,6 @@
-package lk.ijse.dep10.pos.dao.impl;
+package lk.ijse.dep10.pos.dao.custom.impl;
 
-import lk.ijse.dep10.pos.dao.ItemDAO;
+import lk.ijse.dep10.pos.dao.custom.ItemDAO;
 import lk.ijse.dep10.pos.entity.Item;
 
 import java.math.BigDecimal;
