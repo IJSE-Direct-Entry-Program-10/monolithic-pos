@@ -4,12 +4,10 @@ import lk.ijse.dep10.pos.dao.custom.CustomerDAO;
 import lk.ijse.dep10.pos.dao.util.GeneratedKeyHolder;
 import lk.ijse.dep10.pos.dao.util.JdbcTemplate;
 import lk.ijse.dep10.pos.dao.util.KeyHolder;
-import lk.ijse.dep10.pos.dao.util.PreparedStatementCreator;
 import lk.ijse.dep10.pos.entity.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +16,9 @@ import static lk.ijse.dep10.pos.dao.util.Mappers.CUSTOMER_ROW_MAPPER;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
-    private Connection connection;
     private JdbcTemplate jdbcTemplate;
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
         jdbcTemplate = new JdbcTemplate(connection);
     }
 
@@ -36,8 +32,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement stm = con
-    .prepareStatement("INSERT INTO customer (name, address, contact) VALUES (?, ?, ?)",
-            Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("INSERT INTO customer (name, address, contact) VALUES (?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
             stm.setString(1, customer.getName());
             stm.setString(2, customer.getAddress());
             stm.setString(3, customer.getContact());

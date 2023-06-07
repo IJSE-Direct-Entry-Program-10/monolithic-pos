@@ -8,7 +8,6 @@ import lk.ijse.dep10.pos.entity.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +16,9 @@ import static lk.ijse.dep10.pos.dao.util.Mappers.ORDER_ROW_MAPPER;
 
 public class OrderDAOImpl implements OrderDAO {
 
-    private Connection connection;
     private JdbcTemplate jdbcTemplate;
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
         jdbcTemplate = new JdbcTemplate(connection);
     }
 
@@ -33,7 +30,7 @@ public class OrderDAOImpl implements OrderDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement stm = con
-        .prepareStatement("INSERT INTO `order` (datetime) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("INSERT INTO `order` (datetime) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
             stm.setTimestamp(1, order.getDatetime());
             return stm;
         }, keyHolder);
