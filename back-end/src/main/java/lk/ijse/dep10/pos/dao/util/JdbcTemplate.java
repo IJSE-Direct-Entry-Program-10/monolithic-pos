@@ -52,4 +52,14 @@ public class JdbcTemplate {
         }
         return stm.executeUpdate();
     }
+
+    public int update(PreparedStatementCreator pc, KeyHolder kh) throws Exception {
+        PreparedStatement stm = pc.createPreparedStatement(connection);
+        int affectedRows = stm.executeUpdate();
+        ResultSet generatedKeys = stm.getGeneratedKeys();
+        generatedKeys.next();
+        int key = generatedKeys.getInt(1);
+        kh.getKeys().put("1", key);
+        return affectedRows;
+    }
 }
