@@ -1,6 +1,8 @@
 package lk.ijse.dep10.pos.dao.custom.impl;
 
 import lk.ijse.dep10.pos.dao.custom.ItemDAO;
+import lk.ijse.dep10.pos.dao.util.JdbcTemplate;
+import lk.ijse.dep10.pos.dao.util.RowMapper;
 import lk.ijse.dep10.pos.entity.Item;
 
 import java.math.BigDecimal;
@@ -14,70 +16,46 @@ import java.util.Optional;
 public class ItemDAOImpl implements ItemDAO {
 
     private Connection connection;
+    private JdbcTemplate jdbcTemplate;
+    private RowMapper<Item> itemRowMapper = (rs, rowNum) -> {
+        String code = rs.getString("code");
+        String description = rs.getString("description");
+        int qty = rs.getInt("qty");
+        BigDecimal unitPrice = rs.getBigDecimal("unit_price");
+        new Item(code, description, qty, unitPrice);
+    };
 
     public void setConnection(Connection connection) {
         this.connection = connection;
+        jdbcTemplate = new JdbcTemplate(connection);
     }
 
     public long count() throws Exception {
-        PreparedStatement stm = connection.prepareStatement("SELECT COUNT(*) FROM item");
-        ResultSet rst = stm.executeQuery();
-        rst.next();
-        return rst.getLong(1);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM item", Long.class);
     }
 
     public Item save(Item item) throws Exception {
-        PreparedStatement stm = connection.prepareStatement("INSERT INTO item (code, description, qty, unit_price) VALUES (?, ?, ?, ?)");
-        stm.setString(1, item.getCode());
-        stm.setString(2, item.getDescription());
-        stm.setInt(3, item.getQty());
-        stm.setBigDecimal(4, item.getUnitPrice());
-        stm.executeUpdate();
+        jdbcTemplate.update("INSERT INTO item (code, description, qty, unit_price) VALUES (?, ?, ?, ?)",
+                item.getCode(), item.getDescription(), item.getQty(), item.getUnitPrice());
         return item;
     }
 
     public void update(Item item) throws Exception {
-        PreparedStatement stm = connection.prepareStatement("UPDATE item SET description=?, unit_price=?, qty=? WHERE code=?");
-        stm.setString(1, item.getDescription());
-        stm.setBigDecimal(2, item.getUnitPrice());
-        stm.setInt(3, item.getQty());
-        stm.setString(4, item.getCode());
-        stm.executeUpdate();
+        jdbcTemplate.update("UPDATE item SET description=?, unit_price=?, qty=? WHERE code=?",
+                item.getDescription(), item.getUnitPrice(), item.getQty(), item.getCode());
     }
 
     public void deleteById(String code) throws Exception {
-        PreparedStatement stm = connection.prepareStatement("DELETE FROM item WHERE code=?");
-        stm.setString(1, code);
-        stm.executeUpdate();
+        jdbcTemplate.update("DELETE FROM item WHERE code=?", code);
     }
 
     public Optional<Item> findById(String code) throws Exception {
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM item WHERE code=?");
-        stm.setString(1, code);
-        ResultSet rst = stm.executeQuery();
-        if (rst.next()) {
-            String description = rst.getString("description");
-            int qty = rst.getInt("qty");
-            BigDecimal unitPrice = rst.getBigDecimal("unit_price");
-            Item item = new Item(code, description, qty, unitPrice);
-            return Optional.of(item);
-        }
-        return Optional.empty();
+        return Optional.ofNullable(jdbcTemplate
+                .queryForObject("SELECT * FROM item WHERE code=?", itemRowMapper, code));
     }
 
     public List<Item> findAll() throws Exception {
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM item");
-        ResultSet rst = stm.executeQuery();
-        List<Item> itemList = new ArrayList<>();
-        while (rst.next()) {
-            String code = rst.getString("code");
-            String description = rst.getString("description");
-            int qty = rst.getInt("qty");
-            BigDecimal unitPrice = rst.getBigDecimal("unit_price");
-            Item item = new Item(code, description, qty, unitPrice);
-            itemList.add(item);
-        }
-        return itemList;
+        return jdbcTemplate.query("SELECT * FROM item", itemRowMapper);
     }
 
     public boolean existsById(String code) throws Exception {
