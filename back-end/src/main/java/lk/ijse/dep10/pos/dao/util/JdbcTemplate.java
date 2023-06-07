@@ -17,20 +17,20 @@ public class JdbcTemplate {
     private PreparedStatement getStatement(String sql, Object... args) throws Exception {
         PreparedStatement stm = connection.prepareStatement(sql);
         for (int i = 1; i <= args.length; i++) {
-            stm.setObject(i, args[i]);
+            stm.setObject(i, args[i - 1]);
         }
         return stm;
     }
 
     public <T> T queryForObject(String sql, Class<T> returnClass) throws Exception {
         ResultSet rst = getStatement(sql).executeQuery();
-        rst.next();
+        if (!rst.next()) return null;
         return rst.getObject(1, returnClass);
     }
 
     public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws Exception {
         ResultSet rst = getStatement(sql, args).executeQuery();
-        rst.next();
+        if (!rst.next()) return null;
         return rowMapper.mapRow(rst, 0);
     }
 
