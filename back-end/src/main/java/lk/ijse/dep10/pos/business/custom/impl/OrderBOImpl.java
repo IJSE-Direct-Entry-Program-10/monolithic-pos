@@ -28,6 +28,7 @@ public class OrderBOImpl implements OrderBO {
     private final ItemDAO itemDAO = DAOFactory.getInstance().getDAO(DAOType.ITEM);
     private final CustomerDAO customerDAO = DAOFactory.getInstance().getDAO(DAOType.CUSTOMER);
     private final OrderCustomerDAO orderCustomerDAO = DAOFactory.getInstance().getDAO(DAOType.ORDER_CUSTOMER);
+    private final QueryDAO queryDAO = DAOFactory.getInstance().getDAO(DAOType.QUERY);
     private final Transformer transformer = new Transformer();
 
     public OrderBOImpl(DataSource dataSource) {
@@ -115,6 +116,9 @@ public class OrderBOImpl implements OrderBO {
 
     @Override
     public List<OrderDTO2> searchOrders(String query) throws Exception {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            queryDAO.setConnection(connection);
+            return queryDAO.findOrdersByQuery(query);
+        }
     }
 }

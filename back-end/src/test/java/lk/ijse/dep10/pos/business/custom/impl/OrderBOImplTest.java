@@ -9,6 +9,7 @@ import lk.ijse.dep10.pos.business.exception.BusinessExceptionType;
 import lk.ijse.dep10.pos.dto.CustomerDTO;
 import lk.ijse.dep10.pos.dto.ItemDTO;
 import lk.ijse.dep10.pos.dto.OrderDTO;
+import lk.ijse.dep10.pos.dto.OrderDTO2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -202,5 +204,12 @@ class OrderBOImplTest {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @Test
+    void searchOrders() throws Exception {
+        List<OrderDTO2> orderDTO2s = orderBO.searchOrders("");
+        orderDTO2s.forEach(System.out::println);
+        assertNotEquals(0, orderDTO2s.size());
     }
 }
