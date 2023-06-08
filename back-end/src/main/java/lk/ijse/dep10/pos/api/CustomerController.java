@@ -7,7 +7,6 @@ import lk.ijse.dep10.pos.dto.CustomerDTO;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{id}")
     public void updateCustomer(@PathVariable("id") Integer customerId,
-                                @RequestBody CustomerDTO customer) throws Exception {
+                               @RequestBody CustomerDTO customer) throws Exception {
         CustomerBO customerBO = BOFactory.getInstance().getBO(BOType.CUSTOMER, pool);
         customer.setId(customerId);
         customerBO.updateCustomer(customer);
