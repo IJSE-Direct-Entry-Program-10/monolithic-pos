@@ -45,6 +45,7 @@ public class CustomerController {
     @GetMapping
     public List<CustomerDTO> getCustomers(@RequestParam(value = "q", required = false)
                                           String query) throws Exception {
+        if (query == null) query = "";
         CustomerBO customerBO = BOFactory.getInstance().getBO(BOType.CUSTOMER, pool);
         return customerBO.findCustomers(query);
     }

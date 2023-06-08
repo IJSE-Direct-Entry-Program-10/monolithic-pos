@@ -29,6 +29,7 @@ public class OrderController {
 
     @GetMapping
     public List<OrderDTO2> getOrders(@RequestParam(value = "q", required = false) String query) throws Exception {
+        if (query == null) query = "";
         OrderBO orderBO = BOFactory.getInstance().getBO(BOType.ORDER, pool);
         return orderBO.searchOrders(query);
     }

@@ -27,6 +27,7 @@ public class ItemController {
 
     @GetMapping
     public List<ItemDTO> getItems(@RequestParam(value = "q", required = false) String query) throws Exception {
+        if (query == null) query = "";
         ItemBO itemBO = BOFactory.getInstance().getBO(BOType.ITEM, pool);
         return itemBO.findItems(query);
     }
