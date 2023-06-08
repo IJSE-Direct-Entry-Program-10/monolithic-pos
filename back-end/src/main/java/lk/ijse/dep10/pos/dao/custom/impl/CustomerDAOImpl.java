@@ -72,4 +72,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         return jdbcTemplate.queryForObject("SELECT * FROM customer WHERE contact=?",
                 CUSTOMER_ROW_MAPPER, contact) != null;
     }
+
+    @Override
+    public Optional<Customer> findCustomerByIdOrContact(String idOrContact) throws Exception {
+        return Optional.ofNullable(jdbcTemplate
+                .queryForObject("SELECT * FROM customer WHERE CONCAT(id, '')=? OR contact=?",
+                CUSTOMER_ROW_MAPPER, idOrContact, idOrContact));
+    }
 }
