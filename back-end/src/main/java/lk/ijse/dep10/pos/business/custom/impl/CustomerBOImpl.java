@@ -28,7 +28,7 @@ public class CustomerBOImpl implements CustomerBO {
         try (Connection connection = dataSource.getConnection()) {
             customerDAO.setConnection(connection);
 
-            if (existContact(customerDTO.getContact())){
+            if (customerDAO.existsCustomerByContact(customerDTO.getContact())){
                 throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD,
                         "Save failed: Contact number: " + customerDTO.getContact() + " already exists");
             }
@@ -41,16 +41,12 @@ public class CustomerBOImpl implements CustomerBO {
         try (Connection connection = dataSource.getConnection()) {
             customerDAO.setConnection(connection);
 
-            if (existContact(customerDTO.getContact())){
+            if (customerDAO.existsCustomerByContact(customerDTO.getContact())){
                 throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD,
                         "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
             }
             customerDAO.update(transformer.toCustomerEntity(customerDTO));
         }
-    }
-
-    private boolean existContact(String contact){
-        return false;
     }
 
     @Override

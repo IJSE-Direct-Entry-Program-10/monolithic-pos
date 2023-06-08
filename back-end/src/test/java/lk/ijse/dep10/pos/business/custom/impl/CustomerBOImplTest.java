@@ -7,14 +7,14 @@ import lk.ijse.dep10.pos.business.BOType;
 import lk.ijse.dep10.pos.business.custom.CustomerBO;
 import lk.ijse.dep10.pos.business.exception.BusinessException;
 import lk.ijse.dep10.pos.dto.CustomerDTO;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringJUnitConfig(classes = TestConfig.class)
 class CustomerBOImplTest {
@@ -36,6 +36,6 @@ class CustomerBOImplTest {
         CustomerDTO savedCustomerDTO = customerBO.saveCustomer(customerDTO);
         System.out.println(savedCustomerDTO);
         assertNotNull(savedCustomerDTO.getId());
-        assertThrows(BusinessException.class, ()->customerBO.saveCustomer(customerDTO));
+        assertThrows(BusinessException.class, () -> customerBO.saveCustomer(customerDTO));
     }
 }
