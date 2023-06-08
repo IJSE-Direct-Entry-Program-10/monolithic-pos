@@ -7,7 +7,9 @@ import lk.ijse.dep10.pos.business.util.Transformer;
 import lk.ijse.dep10.pos.dao.DAOFactory;
 import lk.ijse.dep10.pos.dao.DAOType;
 import lk.ijse.dep10.pos.dao.custom.CustomerDAO;
+import lk.ijse.dep10.pos.dao.custom.OrderCustomerDAO;
 import lk.ijse.dep10.pos.dto.CustomerDTO;
+import lk.ijse.dep10.pos.entity.OrderCustomer;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -18,6 +20,7 @@ public class CustomerBOImpl implements CustomerBO {
     private final Transformer transformer = new Transformer();
     private final DataSource dataSource;
     private final CustomerDAO customerDAO = DAOFactory.getInstance().getDAO(DAOType.CUSTOMER);
+    private final OrderCustomerDAO orderCustomerDAO = DAOFactory.getInstance().getDAO(DAOType.ORDER_CUSTOMER);
 
     public CustomerBOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -51,7 +54,17 @@ public class CustomerBOImpl implements CustomerBO {
 
     @Override
     public void deleteCustomerByCode(int customerId) throws Exception {
+        try (Connection connection = dataSource.getConnection()) {
+            customerDAO.setConnection(connection);
+            orderCustomerDAO.setConnection(connection);
 
+            if (orderCustomerDAO.existsOrderByCustomerId(customerId)){
+                throw new BusinessException(BusinessExceptionType.INTEGRITY_VIOLATION,
+                        "Delete failed: Customer ID: " + customerId + " is already associated with some orders");
+            }
+
+            customerDAO.deleteById(customerId);
+        }
     }
 
     @Override
