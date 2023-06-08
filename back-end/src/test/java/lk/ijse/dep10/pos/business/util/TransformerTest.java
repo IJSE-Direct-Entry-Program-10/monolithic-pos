@@ -1,11 +1,15 @@
 package lk.ijse.dep10.pos.business.util;
 
 import lk.ijse.dep10.pos.dto.CustomerDTO;
+import lk.ijse.dep10.pos.dto.ItemDTO;
 import lk.ijse.dep10.pos.entity.Customer;
+import lk.ijse.dep10.pos.entity.Item;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,5 +44,27 @@ class TransformerTest {
         assertEquals(customerEntity.getName(), customerDTO.getName());
         assertEquals(customerEntity.getAddress(), customerDTO.getAddress());
         assertEquals(customerEntity.getContact(), customerDTO.getContact());
+    }
+
+    @Test
+    void toItemEntity() {
+        ItemDTO itemDTO = new ItemDTO("123444", "Atlas Black Pen", 5, new BigDecimal("250.00"));
+        Item itemEntity = transformer.toItemEntity(itemDTO);
+
+        assertEquals(itemDTO.getCode(), itemEntity.getCode());
+        assertEquals(itemDTO.getDescription(), itemEntity.getDescription());
+        assertEquals(itemDTO.getQty(), itemEntity.getQty());
+        assertEquals(itemDTO.getUnitPrice(), itemEntity.getUnitPrice());
+    }
+
+    @Test
+    void fromItemEntity() {
+        Item itemEntity = new Item("123444", "Atlas Black Pen", 5, new BigDecimal("250.00"));
+        ItemDTO itemDTO = transformer.fromItemEntity(itemEntity);
+
+        assertEquals(itemDTO.getCode(), itemEntity.getCode());
+        assertEquals(itemDTO.getDescription(), itemEntity.getDescription());
+        assertEquals(itemDTO.getQty(), itemEntity.getQty());
+        assertEquals(itemDTO.getUnitPrice(), itemEntity.getUnitPrice());
     }
 }
