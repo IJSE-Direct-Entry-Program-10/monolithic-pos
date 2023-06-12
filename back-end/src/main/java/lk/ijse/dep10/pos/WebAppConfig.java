@@ -1,11 +1,11 @@
 package lk.ijse.dep10.pos;
 
+import lk.ijse.dep10.pos.advice.GlobalExceptionHandler;
 import lk.ijse.dep10.pos.api.CustomerController;
 import lk.ijse.dep10.pos.api.ItemController;
 import lk.ijse.dep10.pos.api.OrderController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -31,5 +31,10 @@ public class WebAppConfig {
     @Bean
     public OrderController orderController() {
         return new OrderController();
+    }
+
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler(){
+        return new GlobalExceptionHandler();
     }
 }
