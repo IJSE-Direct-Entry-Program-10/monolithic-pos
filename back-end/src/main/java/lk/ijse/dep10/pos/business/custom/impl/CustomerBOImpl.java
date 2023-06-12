@@ -46,6 +46,10 @@ public class CustomerBOImpl implements CustomerBO {
             if (customerDAO.existsCustomerByContactAndNotId(customerDTO.getContact(), customerDTO.getId())) {
                     throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD, "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
             }
+
+            if (!customerDAO.existsById(customerDTO.getId()))
+                throw new BusinessException(BusinessExceptionType.RECORD_NOT_FOUND,
+                        "Update failed: Customer ID: " + customerDTO.getId() + " does not exist");
             customerDAO.update(transformer.toCustomerEntity(customerDTO));
         }
     }
@@ -59,6 +63,10 @@ public class CustomerBOImpl implements CustomerBO {
             if (orderCustomerDAO.existsOrderByCustomerId(customerId)) {
                 throw new BusinessException(BusinessExceptionType.INTEGRITY_VIOLATION, "Delete failed: Customer ID: " + customerId + " is already associated with some orders");
             }
+
+            if (!customerDAO.existsById(customerId))
+                throw new BusinessException(BusinessExceptionType.RECORD_NOT_FOUND,
+                        "Update failed: Customer ID: " + customerId + " does not exist");
 
             customerDAO.deleteById(customerId);
         }
