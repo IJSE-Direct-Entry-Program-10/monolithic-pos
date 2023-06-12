@@ -66,7 +66,7 @@ public class CustomerBOImpl implements CustomerBO {
 
             if (!customerDAO.existsById(customerId))
                 throw new BusinessException(BusinessExceptionType.RECORD_NOT_FOUND,
-                        "Update failed: Customer ID: " + customerId + " does not exist");
+                        "Delete failed: Customer ID: " + customerId + " does not exist");
 
             customerDAO.deleteById(customerId);
         }
