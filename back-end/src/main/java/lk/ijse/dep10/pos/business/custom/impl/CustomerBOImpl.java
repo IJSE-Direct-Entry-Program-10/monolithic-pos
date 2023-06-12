@@ -43,8 +43,8 @@ public class CustomerBOImpl implements CustomerBO {
         try (Connection connection = dataSource.getConnection()) {
             customerDAO.setConnection(connection);
 
-            if (customerDAO.existsCustomerByContact(customerDTO.getContact())) {
-                throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD, "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
+            if (customerDAO.existsCustomerByContactAndNotId(customerDTO.getContact(), customerDTO.getId())) {
+                    throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD, "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
             }
             customerDAO.update(transformer.toCustomerEntity(customerDTO));
         }
