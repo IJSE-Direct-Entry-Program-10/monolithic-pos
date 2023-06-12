@@ -14,10 +14,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -31,10 +28,12 @@ public class CustomerController {
     @ExceptionHandler({MethodArgumentNotValidException.class,
                     MethodArgumentTypeMismatchException.class})
     public Map<String, Object> handleValidationExceptions(Exception exp){
-        LinkedHashMap<String, Object> errorAttributes = new LinkedHashMap<>();
+        HashMap<String, Object> errorAttributes = new LinkedHashMap<>();
+
         errorAttributes.put("timestamp", LocalDateTime.now().toString());
         errorAttributes.put("status", 400);
         errorAttributes.put("error", HttpStatus.BAD_REQUEST);
+
         if (exp instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException mExp = (MethodArgumentNotValidException) exp;
             errorAttributes.put("message", "Data Validation Failed");
@@ -71,8 +70,8 @@ public class CustomerController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable("id") Integer customerId) throws Exception {
+    @DeleteMapping("/{customerId}")
+    public void deleteCustomer(@PathVariable("customerId") Integer customerId) throws Exception {
         CustomerBO customerBO = BOFactory.getInstance().getBO(BOType.CUSTOMER, pool);
         customerBO.deleteCustomerById(customerId);
     }
