@@ -4,7 +4,9 @@ Welcome to the Software Archiecture Series! This project focuses on the implemen
 
 ### Releases
 1. Spring Web MVC + JDBC (v1.0.0) <br>
- We are far from meeting the accepted standards. We're just getting started!
+ We are far from meeting the accepted standards. We're just getting started! <br><br>
+ Auxiliary Materials of this releasement can be found here: [Helpers v1.0.0](https://github.com/IJSE-Direct-Entry-Program-10/helpers-v1.0.0.git)<br>
+ If you are interested in testing out this release, you can check the front-end here: [Helpers v1.0.0/Front-End](https://github.com/IJSE-Direct-Entry-Program-10/helpers-v1.0.0/tree/main/pos-front-end)
 
 ### License
 Copyright &copy; 2023 DEP-10. All Rights Reserved.
