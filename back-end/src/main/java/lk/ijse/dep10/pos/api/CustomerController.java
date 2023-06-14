@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("api/v1/customers")
 @CrossOrigin
 @Api("Customer Controller REST API")
 public class CustomerController {
