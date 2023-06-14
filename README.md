@@ -1,39 +1,10 @@
-# Point of Sale System (POS System)
+# Monolithic Archiecture
 
-### Technology Outline
-Front-End
-- HTML5
-- CSS3
-- ECMAScript
-    - Modules
-- Bootstrap
-- Animate.CSS
-- js-joda
-- big.js
-- AJAX 
-- Web API
-    - DOM API
-    - XHR
-    - LocalStorage
-    - [SessionStorage]
-    - WebSocket
-    - Intl
-- jQuery
-    - jQuery AJAX
-- CSS Loaders
-- Client-side Reporting
+Welcome to the Monolithic Archiecture Series! This project focuses on the implementation of multiple architectural styles, including monolithic architecture, client-server architecture, resource-oriented architecture (ROA), and layered architecture (MVC2, Extended MVC or n-tier archiecture). By exploring these compound architectural approaches, this project aims to provide a comprehensive understanding of how different architectural styles can be utilized to build robust and scalable software systems.
 
-Back-End
-- Java 11
-- Java SE 11
-- Spring Framework (Spring Web MVC)
-- Spring Web Socket
-- Apache DBCP
-- Lombok
-- Jackson
+### Releases
+1. Spring Web MVC + JDBC (v1.0.0)
 
-Database
-- MySQL
 
 ### License
 Copyright &copy; 2023 DEP-10. All Rights Reserved.
