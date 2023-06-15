@@ -7,9 +7,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/pos.out.log</file>
+        <file>${catalina.home}/logs/pos/pos.out.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/pos.out.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>${catalina.home}/logs/pos/pos.out.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -18,7 +18,9 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <logger name="lk.ijse.dep10.pos" level="DEBUG" />
+
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
