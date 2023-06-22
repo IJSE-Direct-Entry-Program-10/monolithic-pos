@@ -4,26 +4,29 @@ import lk.ijse.dep10.pos.business.custom.CustomerBO;
 import lk.ijse.dep10.pos.business.exception.BusinessException;
 import lk.ijse.dep10.pos.business.exception.BusinessExceptionType;
 import lk.ijse.dep10.pos.business.util.Transformer;
-import lk.ijse.dep10.pos.dao.DAOFactory;
-import lk.ijse.dep10.pos.dao.DAOType;
 import lk.ijse.dep10.pos.dao.custom.CustomerDAO;
 import lk.ijse.dep10.pos.dao.custom.OrderCustomerDAO;
 import lk.ijse.dep10.pos.dto.CustomerDTO;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class CustomerBOImpl implements CustomerBO {
 
-    private final Transformer transformer = new Transformer();
+    private final Transformer transformer;
     private final DataSource dataSource;
-    private final CustomerDAO customerDAO = DAOFactory.getInstance().getDAO(DAOType.CUSTOMER);
-    private final OrderCustomerDAO orderCustomerDAO = DAOFactory.getInstance().getDAO(DAOType.ORDER_CUSTOMER);
+    private final CustomerDAO customerDAO;
+    private final OrderCustomerDAO orderCustomerDAO;
 
-    public CustomerBOImpl(DataSource dataSource) {
+    public CustomerBOImpl(Transformer transformer, DataSource dataSource, CustomerDAO customerDAO, OrderCustomerDAO orderCustomerDAO) {
+        this.transformer = transformer;
         this.dataSource = dataSource;
+        this.customerDAO = customerDAO;
+        this.orderCustomerDAO = orderCustomerDAO;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class CustomerBOImpl implements CustomerBO {
             customerDAO.setConnection(connection);
 
             if (customerDAO.existsCustomerByContactAndNotId(customerDTO.getContact(), customerDTO.getId())) {
-                    throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD, "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
+                throw new BusinessException(BusinessExceptionType.DUPLICATE_RECORD, "Update failed: Contact number: " + customerDTO.getContact() + " already exists");
             }
 
             if (!customerDAO.existsById(customerDTO.getId()))
@@ -80,7 +83,7 @@ public class CustomerBOImpl implements CustomerBO {
             return customerDAO.findCustomerByIdOrContact(idOrContact)
                     .map(transformer::fromCustomerEntity)
                     .orElseThrow(() -> new BusinessException(BusinessExceptionType.RECORD_NOT_FOUND,
-                        "No customer record is associated with the id or contact: " + idOrContact));
+                            "No customer record is associated with the id or contact: " + idOrContact));
         }
     }
 

@@ -8,7 +8,9 @@ import lk.ijse.dep10.pos.entity.OrderDetail;
 import lk.ijse.dep10.pos.entity.OrderDetailPK;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Transformer {
 
     private final ModelMapper mapper = new ModelMapper();

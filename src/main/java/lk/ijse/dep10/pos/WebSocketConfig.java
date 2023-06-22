@@ -2,6 +2,8 @@ package lk.ijse.dep10.pos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.ijse.dep10.pos.api.CustomerWSHandler;
+import lk.ijse.dep10.pos.business.custom.CustomerBO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
