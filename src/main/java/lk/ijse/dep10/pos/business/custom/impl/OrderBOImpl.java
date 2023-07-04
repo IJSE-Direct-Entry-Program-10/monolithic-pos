@@ -60,7 +60,7 @@ public class OrderBOImpl implements OrderBO {
                         "Order failed: Provided customer data does not match");
 
             /* Okay everything seems fine with this customer, let's associate customer with the order then */
-            orderCustomerDAO.save(new OrderCustomer(order.getId(), orderDTO.getCustomer().getId()));
+            orderCustomerDAO.save(new OrderCustomer(order, transformer.toCustomerEntity(orderDTO.getCustomer())));
         }
 
         /* Let's save order details */

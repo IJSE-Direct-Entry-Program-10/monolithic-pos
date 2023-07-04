@@ -10,6 +10,9 @@ Welcome to the Software Archiecture Series! This project focuses on the implemen
 
 3. [Spring Boot Integration (v3.0.0)](https://github.com/IJSE-Direct-Entry-Program-10/monolithic-pos/releases/tag/v3.0.0) <br>
 
+4. [Spring Framework + Hibernate (v4.0.0)](https://github.com/IJSE-Direct-Entry-Program-10/monolithic-pos/releases/tag/v4.0.0) <br>
+ Step by step [Video Guide](https://drive.google.com/file/d/1Y0oFmpGoWxKO8oDdNj_Bn46DGjDr8zmc/view?usp=sharing)
+
 ### How to use?
  Auxiliary Materials of this releasement can be found here: [Helpers](https://github.com/IJSE-Direct-Entry-Program-10/helpers.git)<br>
  If you are interested in testing out this release, you can check the front-end here: [Helpers/Front-End](https://github.com/IJSE-Direct-Entry-Program-10/helpers/tree/main/pos-front-end)
