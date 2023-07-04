@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:application.properties")
-@Import(JdbcConfig.class)
+@Import(HibernateConfig.class)
 public class WebRootConfig {
 
 }
