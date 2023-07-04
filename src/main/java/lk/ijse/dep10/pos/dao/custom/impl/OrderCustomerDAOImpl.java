@@ -10,6 +10,7 @@ public class OrderCustomerDAOImpl extends CrudDAOImpl<OrderCustomer, Integer> im
 
     @Override
     public boolean existsOrderByCustomerId(int customerId) throws Exception {
-        return false;
+        return getSession().createQuery("FROM OrderCustomer oc WHERE oc.customer.id = :customerId", OrderCustomer.class)
+                .setParameter("customerId", customerId).uniqueResultOptional().isPresent();
     }
 }

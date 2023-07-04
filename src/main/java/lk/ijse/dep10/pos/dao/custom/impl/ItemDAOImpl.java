@@ -12,6 +12,7 @@ public class ItemDAOImpl extends CrudDAOImpl<Item, String> implements ItemDAO {
 
     @Override
     public List<Item> findItems(String query) throws Exception {
-        return null;
+        query = "%" + query + "%";
+        return getSession().createQuery("FROM Item i WHERE i.code LIKE ?1 OR i.description LIKE ?2", Item.class).setParameter(1, query).setParameter(2, query).list();
     }
 }
