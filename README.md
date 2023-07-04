@@ -1,6 +1,6 @@
 # Monolithic POS System
 
-Welcome to the Software Archiecture Series! This project focuses on the implementation of multiple architectural styles, including monolithic architecture, client-server architecture, resource-oriented architecture (ROA), and layered architecture (MVC2, Extended MVC or n-tier archiecture). By exploring these compound architectural approaches, this project aims to provide a comprehensive understanding of how different architectural styles can be utilized to build robust and scalable software systems.
+Welcome to the Software Architecture Series! This project focuses on the implementation of multiple architectural styles, including monolithic architecture, client-server architecture, resource-oriented architecture (ROA), and layered architecture (MVC2, Extended MVC or n-tier archiecture). By exploring these compound architectural approaches, this project aims to provide a comprehensive understanding of how different architectural styles can be utilized to build robust and scalable software systems.
 
 ### Releases
 1. [Spring Framework + JDBC (v1.0.0)](https://github.com/IJSE-Direct-Entry-Program-10/monolithic-pos/releases/tag/v1.0.0) <br>
