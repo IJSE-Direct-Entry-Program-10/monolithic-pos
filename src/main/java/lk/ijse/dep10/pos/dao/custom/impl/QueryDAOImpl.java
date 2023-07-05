@@ -2,25 +2,22 @@ package lk.ijse.dep10.pos.dao.custom.impl;
 
 import lk.ijse.dep10.pos.dao.custom.QueryDAO;
 import lk.ijse.dep10.pos.dto.OrderDTO2;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.transform.Transformers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class QueryDAOImpl implements QueryDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    @Override
-    public Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<OrderDTO2> findOrdersByQuery(String query) throws Exception {
@@ -39,11 +36,17 @@ public class QueryDAOImpl implements QueryDAO {
                 "   OR c.name LIKE ?4 " +
                 "GROUP BY o.id;";
         query = "%" + query + "%";
-        List<OrderDTO2> orderList = getSession().createNativeQuery(sql)
+        List<Tuple> orderList = entityManager.createNativeQuery(sql, Tuple.class)
                 .setParameter(1, query).setParameter(2, query).setParameter(3, query).setParameter(4, query)
-                .setResultTransformer(Transformers.aliasToBean(OrderDTO2.class)).list();
-        return orderList.stream().peek(orderDTO2 -> {
-            if (orderDTO2.getCustomerName() == null) orderDTO2.setCustomerId(null);
+                .getResultList();
+        return orderList.stream().map(tuple -> new OrderDTO2(
+                tuple.get("orderId", String.class),
+                tuple.get("orderDate", Timestamp.class).toLocalDateTime(),
+                tuple.get("customerId", String.class),
+                tuple.get("customerName", String.class),
+                tuple.get("orderTotal", BigDecimal.class)
+        )).peek(o -> {
+            if (o.getCustomerName() == null) o.setCustomerId(null);
         }).collect(Collectors.toList());
     }
 }
