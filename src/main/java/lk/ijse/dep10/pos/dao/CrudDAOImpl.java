@@ -5,6 +5,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -12,48 +16,46 @@ import java.util.Optional;
 
 public abstract class CrudDAOImpl<T extends SuperEntity, ID extends Serializable> implements CrudDAO<T, ID>{
 
-    @Autowired
-    private SessionFactory sessionFactory;
+//    @PersistenceUnit
+//    private EntityManagerFactory entityManagerFactory;
+
+    @PersistenceContext
+    protected EntityManager entityManager;
     private final Class<T> entityClassObj;
 
     public CrudDAOImpl() {
-        entityClassObj = (Class<T>)(((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-    }
-
-    @Override
-    public Session getSession() {
-        return sessionFactory.getCurrentSession();
+        entityClassObj = (Class<T>) (((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 
     @Override
     public long count() throws Exception {
-        return getSession().createQuery("SELECT count(e) FROM "+ entityClassObj.getName() + " e", Long.class).uniqueResult();
+        return entityManager.createQuery("SELECT count(e) FROM "+ entityClassObj.getName() + " e", Long.class).getSingleResult();
     }
 
     @Override
     public T save(T entity) throws Exception {
-        getSession().save(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
     @Override
     public void update(T entity) throws Exception {
-        getSession().update(entity);
+        entityManager.merge(entity);
     }
 
     @Override
     public void deleteById(ID pk) throws Exception {
-        getSession().delete(getSession().get(entityClassObj, pk));
+        entityManager.remove(entityManager.find(entityClassObj, pk));
     }
 
     @Override
     public Optional<T> findById(ID pk) throws Exception {
-        return Optional.ofNullable(getSession().get(entityClassObj, pk));
+        return Optional.ofNullable(entityManager.find(entityClassObj, pk));
     }
 
     @Override
     public List<T> findAll() throws Exception {
-        return getSession().createQuery("FROM " + entityClassObj.getName(), entityClassObj).list();
+        return entityManager.createQuery("SELECT e FROM " + entityClassObj.getName() + " e", entityClassObj).getResultList();
     }
 
     @Override
