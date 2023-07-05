@@ -14,6 +14,7 @@ Welcome to the Software Archiecture Series! This project focuses on the implemen
  Step by step [Video Guide](https://drive.google.com/file/d/1Y0oFmpGoWxKO8oDdNj_Bn46DGjDr8zmc/view?usp=sharing)
 
 5. [Spring Framework + JPA (v5.0.0)](https://github.com/IJSE-Direct-Entry-Program-10/monolithic-pos/releases/tag/v5.0.0)<br>
+ Step by step [Video Guide](https://drive.google.com/file/d/1Pnpg5Q-dFjoMoiHP942G944sR6KQJkuQ/view?usp=sharing)
 
 ### How to use?
  Auxiliary Materials of this releasement can be found here: [Helpers](https://github.com/IJSE-Direct-Entry-Program-10/helpers.git)<br>
